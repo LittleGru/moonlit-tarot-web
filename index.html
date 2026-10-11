@@ -8,9 +8,9 @@
     <title>懒懒塔罗 · 学习与练习</title>
     <meta name="description" content="懒懒塔罗：78 张韦特塔罗牌义、9 种牌阵、随机抽牌、AI 解读与练习评分。">
     <link rel="icon" type="image/png" href="assets/lanlan-witch-logo.png">
-    <link rel="stylesheet" href="styles/index.css?v=8e8744c8c898">
-    <script type="module" src="src/main.js?v=8e8744c8c898"></script>
-  <meta name="tarot-supabase-url" content="https://fgutacbejaiaktsecvuc.supabase.co"><meta name="tarot-supabase-key" content="sb_publishable_I3So_DK3j0ovOxiBffTgMg_bkYvcU49"><meta name="tarot-assets-version" content="8e8744c8c898"></head>
+    <link rel="stylesheet" href="styles/index.css?v=cbf83dc87a43">
+    <script type="module" src="src/main.js?v=cbf83dc87a43"></script>
+  <meta name="tarot-supabase-url" content="https://fgutacbejaiaktsecvuc.supabase.co"><meta name="tarot-supabase-key" content="sb_publishable_I3So_DK3j0ovOxiBffTgMg_bkYvcU49"><meta name="tarot-assets-version" content="cbf83dc87a43"></head>
   <body data-page="home">
     <a class="skip-link" href="#main-content">跳到正文</a>
     <header class="header">
@@ -97,7 +97,7 @@
           </div>
           <label class="search"><input id="search" type="search" placeholder="搜索牌名或关键词" aria-label="搜索牌名或关键词"></label>
         </div>
-        <div class="library-tools"><button id="clear-library-filters" class="text-button" hidden>清除筛选</button></div>
+        <div class="library-tools">
         <div id="filters" class="filter-row" role="group" aria-label="按花色筛选">
           <button class="selected" data-filter="all" aria-pressed="true">全部 78</button>
           <button data-filter="complete" aria-pressed="false">完整牌义</button>
@@ -106,6 +106,8 @@
           <button data-filter="cups" aria-pressed="false">圣杯</button>
           <button data-filter="swords" aria-pressed="false">宝剑</button>
           <button data-filter="pentacles" aria-pressed="false">星币</button>
+        </div>
+        <button id="clear-library-filters" class="text-button" hidden>清除筛选</button>
         </div>
         <p id="library-count" class="muted"></p>
         <div id="library-grid" class="library-grid"></div>

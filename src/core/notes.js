@@ -1,4 +1,4 @@
-import { validateGrade, validateInterpretation } from './ai-contract.js?v=8e8744c8c898';
+import { validateGrade, validateInterpretation } from './ai-contract.js?v=cbf83dc87a43';
 const kinds = new Set(['study', 'draw', 'practice']);
 export const NOTE_LIMIT = 300;
 

@@ -1,16 +1,16 @@
-import { loadCatalog } from './shared/catalog-loader.js?v=8e8744c8c898';
-import { element } from './shared/dom.js?v=8e8744c8c898';
-import { createNavigation } from './shared/navigation.js?v=8e8744c8c898';
-import { mountCardDialog } from './shared/card-dialog.js?v=8e8744c8c898';
-import { mountDraw } from './features/draw/controller.js?v=8e8744c8c898';
-import { mountLibrary } from './features/library/controller.js?v=8e8744c8c898';
-import { mountPractice } from './features/practice/controller.js?v=8e8744c8c898';
-import { registerTarotTools } from './integrations/webmcp.js?v=8e8744c8c898';
-import { configureRuntime } from './shared/runtime.js?v=8e8744c8c898';
-import { mountAIAccess } from './shared/ai-access.js?v=8e8744c8c898';
-import { mountSpreadPicker } from './shared/spread-picker.js?v=8e8744c8c898';
-import { mountNotes } from './features/notes/controller.js?v=8e8744c8c898';
-import { isAuthCallback } from './core/auth-callback.js?v=8e8744c8c898';
+import { loadCatalog } from './shared/catalog-loader.js?v=cbf83dc87a43';
+import { element } from './shared/dom.js?v=cbf83dc87a43';
+import { createNavigation } from './shared/navigation.js?v=cbf83dc87a43';
+import { mountCardDialog } from './shared/card-dialog.js?v=cbf83dc87a43';
+import { mountDraw } from './features/draw/controller.js?v=cbf83dc87a43';
+import { mountLibrary } from './features/library/controller.js?v=cbf83dc87a43';
+import { mountPractice } from './features/practice/controller.js?v=cbf83dc87a43';
+import { registerTarotTools } from './integrations/webmcp.js?v=cbf83dc87a43';
+import { configureRuntime } from './shared/runtime.js?v=cbf83dc87a43';
+import { mountAIAccess } from './shared/ai-access.js?v=cbf83dc87a43';
+import { mountSpreadPicker } from './shared/spread-picker.js?v=cbf83dc87a43';
+import { mountNotes } from './features/notes/controller.js?v=cbf83dc87a43';
+import { isAuthCallback } from './core/auth-callback.js?v=cbf83dc87a43';
 
 async function startApplication() {
   const lifetime = new AbortController();

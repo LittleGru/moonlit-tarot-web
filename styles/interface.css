@@ -121,7 +121,9 @@ dialog::backdrop { background:#09060ec9; backdrop-filter:blur(5px); }
 .filter-row { gap:8px; }
 .filter-row button { font-family:var(--font); border-radius:20px; background:none; border-color:#ffffff20; font-size:13px; min-height:40px; padding:6px 15px; }
 .filter-row button.selected { background:#d4b47514; color:#e1c592; border-color:#b7955f85; }
-.library-tools { text-align:right; }
+.library-tools { display:grid; grid-template-columns:minmax(0,1fr) 76px; align-items:start; gap:16px; }
+.library-tools .filter-row { min-width:0; margin:0; }
+.library-tools>.text-button { min-height:40px; padding:6px 0; font-size:13px; white-space:nowrap; text-align:right; }
 .library-grid { grid-template-columns:repeat(6,minmax(0,1fr)); gap:20px; }
 .library-card { border-color:#ffffff14; border-radius:10px; background:#1c1525; padding:16px; text-align:center; }
 .library-card img { width:100%; height:auto; aspect-ratio:1/1.7; object-fit:contain; outline:none; border-radius:3px; }
