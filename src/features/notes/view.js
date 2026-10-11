@@ -1,6 +1,6 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=5cfbefc47f66';
-import { filterNotes } from '../../core/notes.js?v=5cfbefc47f66';
-import { renderNoteContext } from './record-view.js?v=5cfbefc47f66';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=70be6c281e08';
+import { filterNotes } from '../../core/notes.js?v=70be6c281e08';
+import { renderNoteContext } from './record-view.js?v=70be6c281e08';
 
 export const NOTE_KIND_NAMES = Object.freeze({ study: '学习笔记', draw: '抽牌记录', practice: '练习记录' });
 

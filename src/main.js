@@ -1,15 +1,16 @@
-import { loadCatalog } from './shared/catalog-loader.js?v=5cfbefc47f66';
-import { element } from './shared/dom.js?v=5cfbefc47f66';
-import { createNavigation } from './shared/navigation.js?v=5cfbefc47f66';
-import { mountCardDialog } from './shared/card-dialog.js?v=5cfbefc47f66';
-import { mountDraw } from './features/draw/controller.js?v=5cfbefc47f66';
-import { mountLibrary } from './features/library/controller.js?v=5cfbefc47f66';
-import { mountPractice } from './features/practice/controller.js?v=5cfbefc47f66';
-import { registerTarotTools } from './integrations/webmcp.js?v=5cfbefc47f66';
-import { configureRuntime } from './shared/runtime.js?v=5cfbefc47f66';
-import { mountAIAccess } from './shared/ai-access.js?v=5cfbefc47f66';
-import { mountSpreadPicker } from './shared/spread-picker.js?v=5cfbefc47f66';
-import { mountNotes } from './features/notes/controller.js?v=5cfbefc47f66';
+import { loadCatalog } from './shared/catalog-loader.js?v=70be6c281e08';
+import { element } from './shared/dom.js?v=70be6c281e08';
+import { createNavigation } from './shared/navigation.js?v=70be6c281e08';
+import { mountCardDialog } from './shared/card-dialog.js?v=70be6c281e08';
+import { mountDraw } from './features/draw/controller.js?v=70be6c281e08';
+import { mountLibrary } from './features/library/controller.js?v=70be6c281e08';
+import { mountPractice } from './features/practice/controller.js?v=70be6c281e08';
+import { registerTarotTools } from './integrations/webmcp.js?v=70be6c281e08';
+import { configureRuntime } from './shared/runtime.js?v=70be6c281e08';
+import { mountAIAccess } from './shared/ai-access.js?v=70be6c281e08';
+import { mountSpreadPicker } from './shared/spread-picker.js?v=70be6c281e08';
+import { mountNotes } from './features/notes/controller.js?v=70be6c281e08';
+import { isAuthCallback } from './core/auth-callback.js?v=70be6c281e08';
 
 async function startApplication() {
   const lifetime = new AbortController();
@@ -26,8 +27,10 @@ async function startApplication() {
   mountAIAccess(document, signal);
   let navigation;
   const notes = mountNotes({ cards: catalog.cards, signal });
-  // Cloud account restoration must not hold up drawing, learning or navigation.
-  notes.initialize();
+  // Email callbacks must be consumed before hash navigation can rewrite the URL.
+  // Ordinary visits still restore the account without delaying the rest of the app.
+  const notesReady = notes.initialize();
+  if (isAuthCallback(window.location)) await notesReady;
   const draw = mountDraw({ ...catalog, signal, aiAvailable, onSave: notes.saveSnapshot });
   const library = mountLibrary({ cards: catalog.cards, guides: catalog.guides, signal });
   const practice = mountPractice({

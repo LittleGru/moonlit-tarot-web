@@ -1,9 +1,9 @@
-import { confirmAction } from '../../shared/confirmation.js?v=5cfbefc47f66';
-import { createNote } from '../../core/notes.js?v=5cfbefc47f66';
-import { element, listen } from '../../shared/dom.js?v=5cfbefc47f66';
-import { createNotesView } from './view.js?v=5cfbefc47f66';
-import { createNotesAuth } from './auth.js?v=5cfbefc47f66';
-import { createCloudNotesStore } from './cloud-store.js?v=5cfbefc47f66';
+import { confirmAction } from '../../shared/confirmation.js?v=70be6c281e08';
+import { createNote } from '../../core/notes.js?v=70be6c281e08';
+import { element, listen } from '../../shared/dom.js?v=70be6c281e08';
+import { createNotesView } from './view.js?v=70be6c281e08';
+import { createNotesAuth } from './auth.js?v=70be6c281e08';
+import { createCloudNotesStore } from './cloud-store.js?v=70be6c281e08';
 
 export function mountNotes({ cards, signal }) {
   const view = createNotesView(cards);
@@ -32,6 +32,7 @@ export function mountNotes({ cards, signal }) {
   }
 
   function updateAccountView() {
+    if (user) element('#notes-login-status').hidden = true;
     element('#notes-storage').textContent = user ? `个人云端笔记 · ${user.email ?? ''}` : '登录后查看你的云端笔记';
     login.hidden = true;
     element('#new-note').hidden = !user;
@@ -242,6 +243,12 @@ export function mountNotes({ cards, signal }) {
         auth = await createNotesAuth(document, switchAccount);
         updateAccountView();
         if (auth?.user) await switchAccount(auth.user, auth.client);
+        if (auth?.callbackError) {
+          view.message(auth.callbackError);
+          element('#notes-auth-message').textContent = auth.callbackError;
+          element('#notes-login-status').textContent = auth.callbackError;
+          element('#notes-login-status').hidden = false;
+        }
         signal.addEventListener('abort', () => auth?.dispose(), { once: true });
       } catch (error) { view.message(error.message); element('#notes-auth-message').textContent = error.message; updateAccountView(); }
       await refresh();

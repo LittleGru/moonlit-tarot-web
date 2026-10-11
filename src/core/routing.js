@@ -1,3 +1,5 @@
+import { isAuthCallback } from './auth-callback.js?v=70be6c281e08';
+
 export const PAGE_TITLES = Object.freeze({
   home: '首页', draw: '抽牌', learn: '牌义资料', practice: '解读练习', guide: '入门指南', notes: '我的笔记',
 });
@@ -12,8 +14,9 @@ export function createPageRouter({ location, history, render }) {
   let current;
 
   function restore() {
-    const page = pageFromHash(location.hash);
-    if (location.hash !== `#/${page}`) history.replaceState(history.state, '', `#/${page}`);
+    const callback = isAuthCallback(location);
+    const page = callback ? 'notes' : pageFromHash(location.hash);
+    if (!callback && location.hash !== `#/${page}`) history.replaceState(history.state, '', `#/${page}`);
     if (page === current) return;
     current = page;
     render(page);
