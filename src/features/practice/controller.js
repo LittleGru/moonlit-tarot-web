@@ -1,11 +1,11 @@
-import { confirmAction } from '../../shared/confirmation.js?v=f29333f3568a';
-import { createPracticeSession } from '../../core/practice.js?v=f29333f3568a';
-import { element, listen } from '../../shared/dom.js?v=f29333f3568a';
-import { createPracticeView } from './view.js?v=f29333f3568a';
-import { createGradingView } from './ai-view.js?v=f29333f3568a';
-import { createLatestRequest } from '../../shared/ai-view.js?v=f29333f3568a';
-import { requestAI } from '../../shared/ai-client.js?v=f29333f3568a';
-import { validateGrade, validateScenario } from '../../core/ai-contract.js?v=f29333f3568a';
+import { confirmAction } from '../../shared/confirmation.js?v=d73b5cf6cab7';
+import { createPracticeSession } from '../../core/practice.js?v=d73b5cf6cab7';
+import { element, listen } from '../../shared/dom.js?v=d73b5cf6cab7';
+import { createPracticeView } from './view.js?v=d73b5cf6cab7';
+import { createGradingView } from './ai-view.js?v=d73b5cf6cab7';
+import { createLatestRequest } from '../../shared/ai-view.js?v=d73b5cf6cab7';
+import { requestAI } from '../../shared/ai-client.js?v=d73b5cf6cab7';
+import { validateGrade, validateScenario } from '../../core/ai-contract.js?v=d73b5cf6cab7';
 
 export function mountPractice({ cards, spreads, scenarios, includeReversed, signal, aiAvailable = true, onSave }) {
   const session = createPracticeSession(cards, scenarios, spreads);

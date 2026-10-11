@@ -1,9 +1,9 @@
-import { confirmAction } from '../../shared/confirmation.js?v=f29333f3568a';
-import { createNote } from '../../core/notes.js?v=f29333f3568a';
-import { element, listen } from '../../shared/dom.js?v=f29333f3568a';
-import { createNotesView } from './view.js?v=f29333f3568a';
-import { createNotesAuth } from './auth.js?v=f29333f3568a';
-import { createCloudNotesStore } from './cloud-store.js?v=f29333f3568a';
+import { confirmAction } from '../../shared/confirmation.js?v=d73b5cf6cab7';
+import { createNote } from '../../core/notes.js?v=d73b5cf6cab7';
+import { element, listen } from '../../shared/dom.js?v=d73b5cf6cab7';
+import { createNotesView } from './view.js?v=d73b5cf6cab7';
+import { createNotesAuth } from './auth.js?v=d73b5cf6cab7';
+import { createCloudNotesStore } from './cloud-store.js?v=d73b5cf6cab7';
 
 export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
   const view = createNotesView(cards);
@@ -102,7 +102,7 @@ export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
     return !dirty || await confirmAction({ title: '切换到另一篇笔记？', message: '当前修改还没有保存。切换后将放弃这些修改。', confirmLabel: '放弃并切换', cancelLabel: '继续写' });
   }
 
-  async function switchAccount(nextUser, client, event) {
+  async function switchAccount(nextUser, client, event, returnPage) {
     if (nextUser?.id === user?.id && (nextUser || store === null)) return;
     if (dirty) drafts.set(scope(), { ...(current ?? createNote({})), ...view.values() });
     user = nextUser;
@@ -113,9 +113,9 @@ export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
     if (drafts.has(scope())) { dirty = true; view.message('已恢复上次尚未保存的草稿。'); }
     if (!user && notebook.open) notebook.close();
     updateAccountView();
-    // A new email login (including another tab) enters the private journal.
+    // A new email login (including another tab) returns to its starting page.
     // Restoring an existing session on an ordinary visit leaves navigation alone.
-    if (user && event === 'SIGNED_IN') onSignedIn();
+    if (user && event === 'SIGNED_IN') onSignedIn(returnPage);
     await refresh();
     if (user && pendingAction) {
       const action = pendingAction;
@@ -255,6 +255,7 @@ export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
         signal.addEventListener('abort', () => auth?.dispose(), { once: true });
       } catch (error) { view.message(error.message); element('#notes-auth-message').textContent = error.message; updateAccountView(); }
       await refresh();
+      return { user, returnPage: auth?.returnPage ?? 'notes' };
     },
     enter: refresh,
     saveSnapshot,

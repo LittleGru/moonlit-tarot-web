@@ -1,4 +1,4 @@
-import { drawCards, randomIndex } from './drawing.js?v=f29333f3568a';
+import { drawCards, randomIndex } from './drawing.js?v=d73b5cf6cab7';
 
 export function scenarioSupportsSpread(scenario, spreadId) {
   return !scenario.spreadIds || scenario.spreadIds.includes(spreadId);

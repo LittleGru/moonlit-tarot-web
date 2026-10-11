@@ -1,5 +1,5 @@
-import { searchCards } from '../../core/catalog.js?v=f29333f3568a';
-import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=f29333f3568a';
+import { searchCards } from '../../core/catalog.js?v=d73b5cf6cab7';
+import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=d73b5cf6cab7';
 
 export function mountLibrary({ cards, guides = [], signal }) {
   const search = element('#search');
