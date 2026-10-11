@@ -1,4 +1,4 @@
-import { element } from './dom.js?v=8c7fcf784de8';
+import { element } from './dom.js?v=8e8744c8c898';
 
 /** One explicit decision; Escape and the secondary button always preserve the current work. */
 export function confirmAction({ title, message, confirmLabel = '继续', cancelLabel = '取消' }) {

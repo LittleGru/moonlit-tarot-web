@@ -8,9 +8,9 @@
     <title>懒懒塔罗 · 学习与练习</title>
     <meta name="description" content="懒懒塔罗：78 张韦特塔罗牌义、9 种牌阵、随机抽牌、AI 解读与练习评分。">
     <link rel="icon" type="image/png" href="assets/lanlan-witch-logo.png">
-    <link rel="stylesheet" href="styles/index.css?v=8c7fcf784de8">
-    <script type="module" src="src/main.js?v=8c7fcf784de8"></script>
-  <meta name="tarot-supabase-url" content="https://fgutacbejaiaktsecvuc.supabase.co"><meta name="tarot-supabase-key" content="sb_publishable_I3So_DK3j0ovOxiBffTgMg_bkYvcU49"><meta name="tarot-assets-version" content="8c7fcf784de8"></head>
+    <link rel="stylesheet" href="styles/index.css?v=8e8744c8c898">
+    <script type="module" src="src/main.js?v=8e8744c8c898"></script>
+  <meta name="tarot-supabase-url" content="https://fgutacbejaiaktsecvuc.supabase.co"><meta name="tarot-supabase-key" content="sb_publishable_I3So_DK3j0ovOxiBffTgMg_bkYvcU49"><meta name="tarot-assets-version" content="8e8744c8c898"></head>
   <body data-page="home">
     <a class="skip-link" href="#main-content">跳到正文</a>
     <header class="header">
@@ -140,10 +140,8 @@
           </div>
           <div class="panel writing-panel">
             <div class="writing-top"><label for="interpretation" class="step-label">2 · 写下你的解读</label></div>
-            <p class="muted">从最明显的画面细节开始。多张牌时，再说说它们之间的联系。</p>
-            <textarea id="interpretation" placeholder="牌面线索：……
-与题目的联系：……
-建议：……" maxlength="4000"></textarea>
+            <div id="writing-guidance" class="writing-guidance"><p>从牌面细节开始，结合题目说明你的理解。</p><div class="writing-prompts"><span>牌面细节</span><span>与题目的联系</span><span>行动建议</span></div></div>
+            <textarea id="interpretation" aria-describedby="writing-guidance practice-input-hint" placeholder="在这里写下你的解读…" maxlength="4000"></textarea>
             <div class="writing-bottom">
               <span id="char-count" class="muted">0 字</span>
               <div class="practice-actions">

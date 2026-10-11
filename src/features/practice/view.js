@@ -1,6 +1,6 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=8c7fcf784de8';
-import { SPREAD_LEVELS } from '../../core/catalog.js?v=8c7fcf784de8';
-import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=8c7fcf784de8';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=8e8744c8c898';
+import { SPREAD_LEVELS } from '../../core/catalog.js?v=8e8744c8c898';
+import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=8e8744c8c898';
 
 export function createPracticeView() {
   const input = element('#interpretation');
@@ -21,7 +21,15 @@ export function createPracticeView() {
     element('#practice .practice-layout').dataset.multi = String(spread.count > 1);
     const table = element('#practice-card');
     table.className = `practice-cards ${spread.count === 1 ? 'single' : ''}`;
-    table.innerHTML = reading.map((drawn, index) => `
+    table.innerHTML = reading.map((drawn, index) => spread.count === 1 ? `
+      <div class="practice-slot">
+        ${renderCardFace(drawn, spread.positions[index].name)}
+        <div class="practice-card-details">
+          <p class="position">${html(spread.positions[index].name)}</p>
+          ${renderCardCaption(drawn)}
+          <p class="practice-position-prompt">点击牌面查看完整牌义</p>
+        </div>
+      </div>` : `
       <div class="practice-slot">
         <p class="position"><b>${index + 1}</b> ${html(spread.positions[index].name)}</p>
         ${renderCardFace(drawn, `${index + 1} ${spread.positions[index].name}`)}
