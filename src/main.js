@@ -1,16 +1,16 @@
-import { loadCatalog } from './shared/catalog-loader.js?v=29db1dae8326';
-import { element } from './shared/dom.js?v=29db1dae8326';
-import { createNavigation } from './shared/navigation.js?v=29db1dae8326';
-import { mountCardDialog } from './shared/card-dialog.js?v=29db1dae8326';
-import { mountDraw } from './features/draw/controller.js?v=29db1dae8326';
-import { mountLibrary } from './features/library/controller.js?v=29db1dae8326';
-import { mountPractice } from './features/practice/controller.js?v=29db1dae8326';
-import { registerTarotTools } from './integrations/webmcp.js?v=29db1dae8326';
-import { configureRuntime } from './shared/runtime.js?v=29db1dae8326';
-import { mountAIAccess } from './shared/ai-access.js?v=29db1dae8326';
-import { mountSpreadPicker } from './shared/spread-picker.js?v=29db1dae8326';
-import { mountNotes } from './features/notes/controller.js?v=29db1dae8326';
-import { isAuthCallback } from './core/auth-callback.js?v=29db1dae8326';
+import { loadCatalog } from './shared/catalog-loader.js?v=f29333f3568a';
+import { element } from './shared/dom.js?v=f29333f3568a';
+import { createNavigation } from './shared/navigation.js?v=f29333f3568a';
+import { mountCardDialog } from './shared/card-dialog.js?v=f29333f3568a';
+import { mountDraw } from './features/draw/controller.js?v=f29333f3568a';
+import { mountLibrary } from './features/library/controller.js?v=f29333f3568a';
+import { mountPractice } from './features/practice/controller.js?v=f29333f3568a';
+import { registerTarotTools } from './integrations/webmcp.js?v=f29333f3568a';
+import { configureRuntime } from './shared/runtime.js?v=f29333f3568a';
+import { mountAIAccess } from './shared/ai-access.js?v=f29333f3568a';
+import { mountSpreadPicker } from './shared/spread-picker.js?v=f29333f3568a';
+import { mountNotes } from './features/notes/controller.js?v=f29333f3568a';
+import { isAuthCallback } from './core/auth-callback.js?v=f29333f3568a';
 
 async function startApplication() {
   const lifetime = new AbortController();
@@ -26,11 +26,16 @@ async function startApplication() {
   const { aiAvailable } = configureRuntime(document);
   mountAIAccess(document, signal);
   let navigation;
-  const notes = mountNotes({ cards: catalog.cards, signal });
+  const emailCallback = isAuthCallback(window.location);
+  let openNotesAfterLogin = emailCallback;
+  const notes = mountNotes({ cards: catalog.cards, signal, onSignedIn() {
+    if (navigation) navigation.show('notes');
+    else openNotesAfterLogin = true;
+  } });
   // Email callbacks must be consumed before hash navigation can rewrite the URL.
   // Ordinary visits still restore the account without delaying the rest of the app.
   const notesReady = notes.initialize();
-  if (isAuthCallback(window.location)) await notesReady;
+  if (emailCallback) await notesReady;
   const draw = mountDraw({ ...catalog, signal, aiAvailable, onSave: notes.saveSnapshot });
   const library = mountLibrary({ cards: catalog.cards, guides: catalog.guides, signal });
   const practice = mountPractice({
@@ -51,6 +56,7 @@ async function startApplication() {
       if (page === 'notes') notes.enter();
     },
   });
+  if (openNotesAfterLogin) navigation.show('notes');
   mountCardDialog(catalog.cards, signal, { guides: catalog.guides, onNote: notes.newStudy });
   registerTarotTools({ spreads: catalog.spreads, draw, practice, navigation }, signal);
 }

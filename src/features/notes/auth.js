@@ -1,4 +1,4 @@
-import { isAuthCallback, loginCallbackMessage } from '../../core/auth-callback.js?v=29db1dae8326';
+import { isAuthCallback, loginCallbackMessage } from '../../core/auth-callback.js?v=f29333f3568a';
 
 /** The public project key is safe only with the accompanying database RLS migration. */
 export async function createNotesAuth(document, onChange, {
@@ -30,8 +30,8 @@ export async function createNotesAuth(document, onChange, {
   const { data, error } = result;
   if (error && !callback) throw new Error('登录状态无法读取，请重新登录。');
   // Auth callbacks must not await another Supabase operation inside its session lock.
-  const { data: subscription } = client.auth.onAuthStateChange((_event, session) => {
-    setTimeout(() => onChange(session?.user ?? null, client), 0);
+  const { data: subscription } = client.auth.onAuthStateChange((event, session) => {
+    setTimeout(() => onChange(session?.user ?? null, client, event), 0);
   });
   return { client, user: data?.session?.user ?? null,
     callbackError: callback && (error || !data?.session) ? loginCallbackMessage(error ?? { code: callbackCode }) : '',

@@ -1,11 +1,11 @@
-import { confirmAction } from '../../shared/confirmation.js?v=29db1dae8326';
-import { createNote } from '../../core/notes.js?v=29db1dae8326';
-import { element, listen } from '../../shared/dom.js?v=29db1dae8326';
-import { createNotesView } from './view.js?v=29db1dae8326';
-import { createNotesAuth } from './auth.js?v=29db1dae8326';
-import { createCloudNotesStore } from './cloud-store.js?v=29db1dae8326';
+import { confirmAction } from '../../shared/confirmation.js?v=f29333f3568a';
+import { createNote } from '../../core/notes.js?v=f29333f3568a';
+import { element, listen } from '../../shared/dom.js?v=f29333f3568a';
+import { createNotesView } from './view.js?v=f29333f3568a';
+import { createNotesAuth } from './auth.js?v=f29333f3568a';
+import { createCloudNotesStore } from './cloud-store.js?v=f29333f3568a';
 
-export function mountNotes({ cards, signal }) {
+export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
   const view = createNotesView(cards);
   let store = null;
   let records = [];
@@ -102,7 +102,7 @@ export function mountNotes({ cards, signal }) {
     return !dirty || await confirmAction({ title: '切换到另一篇笔记？', message: '当前修改还没有保存。切换后将放弃这些修改。', confirmLabel: '放弃并切换', cancelLabel: '继续写' });
   }
 
-  async function switchAccount(nextUser, client) {
+  async function switchAccount(nextUser, client, event) {
     if (nextUser?.id === user?.id && (nextUser || store === null)) return;
     if (dirty) drafts.set(scope(), { ...(current ?? createNote({})), ...view.values() });
     user = nextUser;
@@ -113,6 +113,9 @@ export function mountNotes({ cards, signal }) {
     if (drafts.has(scope())) { dirty = true; view.message('已恢复上次尚未保存的草稿。'); }
     if (!user && notebook.open) notebook.close();
     updateAccountView();
+    // A new email login (including another tab) enters the private journal.
+    // Restoring an existing session on an ordinary visit leaves navigation alone.
+    if (user && event === 'SIGNED_IN') onSignedIn();
     await refresh();
     if (user && pendingAction) {
       const action = pendingAction;
