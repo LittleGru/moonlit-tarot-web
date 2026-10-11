@@ -274,18 +274,23 @@ dialog::backdrop { background:#09060ec9; backdrop-filter:blur(5px); }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; } }
 
 @media(max-width:720px) { .reading-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; } .reading-actions .primary { grid-column:1/-1; } }
-.guide-jump-links { position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:6px; background:#201727; padding:8px 0 14px; margin-bottom:16px; border-bottom:1px solid #ffffff18; }
+.complete-guide-dialog { padding:0; overflow:hidden; }
+.guide-reader { height:min(820px,calc(90dvh - 2px)); display:grid; grid-template-rows:auto minmax(0,1fr); }
+.guide-reader-header { padding:16px 76px 16px 28px; background:#201727; border-bottom:1px solid #ffffff18; }
+.guide-scroll { min-height:0; overflow:auto; overscroll-behavior:contain; padding:28px; }
+.complete-guide-dialog #close-dialog { position:absolute; top:16px; right:20px; float:none; margin:0; }
+.guide-jump-links { display:flex; flex-wrap:wrap; gap:6px; }
 .guide-jump-links button { padding:8px 12px; min-height:38px; font-size:12px; border:1px solid #ffffff20; border-radius:20px; background:#ffffff04; color:#cbbbd3; }
 .guide-jump-links button:hover { border-color:#d4b475; color:#e2c592; }
-.guide-content [id^=guide-] { scroll-margin-top:78px; }
+.guide-content [id^=guide-] { scroll-margin-top:20px; }
 .guide-portrait>img.reversed { transform:rotate(180deg); }
-@media(max-width:720px) { .guide-jump-links { top:0; gap:5px; } .guide-jump-links button { font-size:11px; padding:6px 10px; } }
+@media(max-width:720px) { .guide-reader-header { padding:14px 66px 14px 20px; } .guide-scroll { padding:20px; } .guide-jump-links { gap:5px; } .guide-jump-links button { font-size:11px; padding:6px 10px; } .complete-guide-dialog #close-dialog { top:14px; right:14px; } }
 
 @media(min-width:960px) { .practice-layout[data-multi=false] { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch; } }
 #notes-resume { margin-bottom:20px; }
 
 @media(max-width:720px) { .controls .check small { display:none; } .controls .check { font-size:12px; } }
 
-@media(max-width:720px) { .guide-jump-links { display:grid; grid-template-columns:1fr 1fr; width:calc(100% - 46px); } .guide-content [id^=guide-] { scroll-margin-top:126px; } }
+@media(max-width:720px) { .guide-jump-links { display:grid; grid-template-columns:1fr 1fr; } }
 body:has(dialog[open]) { overflow:hidden; }
 dialog { overscroll-behavior:contain; }

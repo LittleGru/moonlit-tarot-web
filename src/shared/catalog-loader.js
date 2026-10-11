@@ -1,5 +1,5 @@
-import { validateCards, validateSpreads, validateScenarios } from '../core/catalog.js?v=5afda26a7300';
-import { validateGuides } from '../core/card-guides.js?v=5afda26a7300';
+import { validateCards, validateSpreads, validateScenarios } from '../core/catalog.js?v=8c7fcf784de8';
+import { validateGuides } from '../core/card-guides.js?v=8c7fcf784de8';
 
 async function readJSON(path, fetchResource) {
   const response = await fetchResource(path);

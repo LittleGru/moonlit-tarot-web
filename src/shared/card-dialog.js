@@ -1,7 +1,7 @@
-import { SUIT_NAMES } from '../core/catalog.js?v=5afda26a7300';
-import { element, escapeHTML as html, listen } from './dom.js?v=5afda26a7300';
-import { renderTags } from './card-view.js?v=5afda26a7300';
-import { GUIDE_DOMAINS } from '../core/card-guides.js?v=5afda26a7300';
+import { SUIT_NAMES } from '../core/catalog.js?v=8c7fcf784de8';
+import { element, escapeHTML as html, listen } from './dom.js?v=8c7fcf784de8';
+import { renderTags } from './card-view.js?v=8c7fcf784de8';
+import { GUIDE_DOMAINS } from '../core/card-guides.js?v=8c7fcf784de8';
 
 export function mountCardDialog(cards, signal, { guides = [], onNote } = {}) {
   const cardsById = new Map(cards.map(card => [card.id, card]));
@@ -13,9 +13,9 @@ export function mountCardDialog(cards, signal, { guides = [], onNote } = {}) {
 
   function renderGuide(card, guide) {
     const meaning = guide[orientation];
-    return `<div class="guide-layout">
+    return `<div class="guide-reader"><header class="guide-reader-header"><nav class="guide-jump-links" aria-label="跳到牌义章节"><button data-guide-section="symbols">画面</button><button data-guide-section="meaning">核心牌义</button><button data-guide-section="domains">爱情与事业等</button><button data-guide-section="example">解读示例</button></nav></header><div class="guide-scroll"><div class="guide-layout">
       <aside class="guide-portrait"><img src="${html(card.imagePath)}" class="${orientation === 'reversed' ? 'reversed' : ''}" alt="${html(card.name)}牌面"><p class="eyebrow">${html(SUIT_NAMES[card.suit])}</p><h2 id="detail-title">${html(card.name)}</h2><p class="english">${html(card.english)}</p><div class="tags">${renderTags(card)}</div><button class="outline" data-card-note="${html(card.id)}">写学习笔记</button></aside>
-      <article class="guide-content"><div class="guide-jump-links" aria-label="跳到牌义章节"><button data-guide-section="symbols">画面</button><button data-guide-section="meaning">核心牌义</button><button data-guide-section="domains">爱情与事业等</button><button data-guide-section="example">解读示例</button></div><p class="eyebrow">CARD STUDY · 完整牌义</p><p class="guide-intro">${html(guide.introduction)}</p>
+      <article class="guide-content"><p class="eyebrow">CARD STUDY · 完整牌义</p><p class="guide-intro">${html(guide.introduction)}</p>
       <h3 id="guide-symbols">先看画面</h3><div class="symbol-grid">${guide.symbols.map(symbol => `<section><h4>${html(symbol.name)}</h4><p>${html(symbol.meaning)}</p></section>`).join('')}</div>
       <div class="orientation-switch" role="group" aria-label="切换正逆位解读"><button data-guide-orientation="upright" aria-pressed="${orientation === 'upright'}">正位解读</button><button data-guide-orientation="reversed" aria-pressed="${orientation === 'reversed'}">逆位解读</button></div>
       <section id="guide-meaning" class="meaning-overview"><h3>${orientation === 'upright' ? '正位' : '逆位'} · 核心含义</h3><p>${html(meaning.overview)}</p><p class="guide-advice"><b>可以怎样做</b> ${html(meaning.advice)}</p></section>
@@ -24,7 +24,7 @@ export function mountCardDialog(cards, signal, { guides = [], onNote } = {}) {
       <h3>留给自己的问题</h3><ul>${guide.questions.map(question => `<li>${html(question)}</li>`).join('')}</ul>
       <p class="guide-pitfall"><b>常见误读</b> ${html(guide.pitfall)}</p>
       <div class="related-guides"><span>对照学习</span>${guide.related.map(id => `<button class="text-button" data-detail="${html(id)}">${html(cardsById.get(id).name)} ↗</button>`).join('')}</div>
-      <p class="muted guide-source">画面参考韦特牌组；以上为结合日常情境撰写的学习解读，不是唯一牌义。</p></article></div>`;
+      <p class="muted guide-source">画面参考韦特牌组；以上为结合日常情境撰写的学习解读，不是唯一牌义。</p></article></div></div></div>`;
   }
 
   function open(id, selectedOrientation = 'upright') {
@@ -61,11 +61,11 @@ export function mountCardDialog(cards, signal, { guides = [], onNote } = {}) {
     if (jump) content.querySelector(`#guide-${jump.dataset.guideSection}`)?.scrollIntoView({ behavior: 'instant', block: 'start' });
     const toggle = event.target.closest('[data-guide-orientation]');
     if (toggle && ['upright', 'reversed'].includes(toggle.dataset.guideOrientation)) {
-      const scroll = dialog.scrollTop;
+      const scroll = content.querySelector('.guide-scroll').scrollTop;
       orientation = toggle.dataset.guideOrientation;
       content.innerHTML = renderGuide(current, guidesById.get(current.id));
       content.querySelector(`[data-guide-orientation="${orientation}"]`).focus({ preventScroll: true });
-      dialog.scrollTop = scroll;
+      content.querySelector('.guide-scroll').scrollTop = scroll;
     }
     const note = event.target.closest('[data-card-note]');
     if (note && onNote) onNote(cardsById.get(note.dataset.cardNote), orientation === 'reversed');
