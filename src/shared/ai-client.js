@@ -1,4 +1,4 @@
-import { hostedEndpoint, requireAIInvite, clearAIInvite } from './ai-access.js?v=70be6c281e08';
+import { hostedEndpoint, requireAIInvite, clearAIInvite } from './ai-access.js?v=79e6405d35d2';
 
 /** Hosted requests use an invite; the OpenAI credential never enters the browser. */
 export async function requestAI(endpoint, input, signal) {
