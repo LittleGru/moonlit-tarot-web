@@ -1,5 +1,5 @@
-import { searchCards } from '../../core/catalog.js?v=d73b5cf6cab7';
-import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=d73b5cf6cab7';
+import { searchCards } from '../../core/catalog.js?v=5afda26a7300';
+import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=5afda26a7300';
 
 export function mountLibrary({ cards, guides = [], signal }) {
   const search = element('#search');
@@ -7,6 +7,7 @@ export function mountLibrary({ cards, guides = [], signal }) {
   const filters = element('#filters');
   let suit = 'all';
   const guideIds = new Set(guides.map(guide => guide.cardId));
+  filters.querySelector('[data-filter="complete"]').textContent = `完整牌义 · ${guideIds.size} 张`;
 
   function render() {
     const matches = searchCards(cards, { suit: suit === 'complete' ? 'all' : suit, query: search.value })

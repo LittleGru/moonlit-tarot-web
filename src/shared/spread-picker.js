@@ -1,4 +1,4 @@
-import { element, escapeHTML as html, listen } from './dom.js?v=d73b5cf6cab7';
+import { element, escapeHTML as html, listen } from './dom.js?v=5afda26a7300';
 
 /** Both workflows share the same readable picker; native selects remain the source of truth. */
 export function mountSpreadPicker({ spreads, signal }) {

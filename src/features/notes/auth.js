@@ -1,4 +1,4 @@
-import { isAuthCallback, loginCallbackMessage, loginPageFromHash, loginReturnPage, rememberLoginPage } from '../../core/auth-callback.js?v=d73b5cf6cab7';
+import { isAuthCallback, loginCallbackMessage, loginPageFromHash, loginReturnPage, rememberLoginPage } from '../../core/auth-callback.js?v=5afda26a7300';
 
 /** The public project key is safe only with the accompanying database RLS migration. */
 export async function createNotesAuth(document, onChange, {
