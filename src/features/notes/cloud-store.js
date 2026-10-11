@@ -1,4 +1,4 @@
-import { createNote } from '../../core/notes.js?v=79e6405d35d2';
+import { createNote } from '../../core/notes.js?v=29db1dae8326';
 
 const decode = row => ({ id: row.id, title: row.title, body: row.body, kind: row.kind, snapshot: row.snapshot,
   createdAt: row.created_at, updatedAt: row.updated_at, trashedAt: row.trashed_at });

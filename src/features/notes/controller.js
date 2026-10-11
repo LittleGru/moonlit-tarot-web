@@ -1,9 +1,9 @@
-import { confirmAction } from '../../shared/confirmation.js?v=79e6405d35d2';
-import { createNote } from '../../core/notes.js?v=79e6405d35d2';
-import { element, listen } from '../../shared/dom.js?v=79e6405d35d2';
-import { createNotesView } from './view.js?v=79e6405d35d2';
-import { createNotesAuth } from './auth.js?v=79e6405d35d2';
-import { createCloudNotesStore } from './cloud-store.js?v=79e6405d35d2';
+import { confirmAction } from '../../shared/confirmation.js?v=29db1dae8326';
+import { createNote } from '../../core/notes.js?v=29db1dae8326';
+import { element, listen } from '../../shared/dom.js?v=29db1dae8326';
+import { createNotesView } from './view.js?v=29db1dae8326';
+import { createNotesAuth } from './auth.js?v=29db1dae8326';
+import { createCloudNotesStore } from './cloud-store.js?v=29db1dae8326';
 
 export function mountNotes({ cards, signal }) {
   const view = createNotesView(cards);

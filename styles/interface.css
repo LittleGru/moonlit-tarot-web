@@ -114,7 +114,10 @@ dialog::backdrop { background:#09060ec9; backdrop-filter:blur(5px); }
 .ai-note { font-size:11px; color:#a899b2; margin:12px 0 0; }
 .ai-output { line-height:1.9; }
 /* Learning and practice share compact cards and keep reading and writing in order. */
-#learn .search { width:330px; border-radius:8px; background:#1c1525; }
+#learn .search { width:330px; padding:0; border:1px solid #ffffff25; border-radius:8px; background:#120d1b; transition:border-color .15s,box-shadow .15s; }
+#learn .search input { width:100%; min-width:0; height:46px; margin:0; padding:0 16px; border:0; border-radius:inherit; background:transparent; box-shadow:none; }
+#learn .search input:focus,#learn .search input:focus-visible { outline:none; }
+#learn .search:focus-within { border-color:#d9bc84; box-shadow:0 0 0 3px #d9bc8418; }
 .filter-row { gap:8px; }
 .filter-row button { font-family:var(--font); border-radius:20px; background:none; border-color:#ffffff20; font-size:13px; min-height:40px; padding:6px 15px; }
 .filter-row button.selected { background:#d4b47514; color:#e1c592; border-color:#b7955f85; }
