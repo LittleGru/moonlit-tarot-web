@@ -9,10 +9,7 @@ export function configureRuntime(document) {
   document.querySelector('#grade-practice').hidden = !capabilities.aiAvailable;
   const scenarioButton = document.querySelector('#ai-new-practice');
   if (scenarioButton) scenarioButton.hidden = !capabilities.aiAvailable;
-  for (const note of document.querySelectorAll('.ai-note')) {
-    note.hidden = !capabilities.aiAvailable;
-    if (capabilities.aiAvailable && !capabilities.local) note.textContent = 'AI 反馈供学习参考，合理的不同解释也可以得分。';
-  }
+  for (const note of document.querySelectorAll('.ai-note')) note.hidden = !capabilities.aiAvailable;
   if (!capabilities.aiAvailable) {
     document.querySelector('#practice .intro').textContent = '根据题目写下自己的解读，再对照参考说明与自查提示。';
   }

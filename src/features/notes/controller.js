@@ -1,9 +1,9 @@
-import { confirmAction } from '../../shared/confirmation.js?v=cbf83dc87a43';
-import { createNote } from '../../core/notes.js?v=cbf83dc87a43';
-import { element, listen } from '../../shared/dom.js?v=cbf83dc87a43';
-import { createNotesView } from './view.js?v=cbf83dc87a43';
-import { createNotesAuth } from './auth.js?v=cbf83dc87a43';
-import { createCloudNotesStore } from './cloud-store.js?v=cbf83dc87a43';
+import { confirmAction } from '../../shared/confirmation.js?v=08a96ee1135a';
+import { createNote } from '../../core/notes.js?v=08a96ee1135a';
+import { element, listen } from '../../shared/dom.js?v=08a96ee1135a';
+import { createNotesView } from './view.js?v=08a96ee1135a';
+import { createNotesAuth } from './auth.js?v=08a96ee1135a';
+import { createCloudNotesStore } from './cloud-store.js?v=08a96ee1135a';
 
 export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
   const view = createNotesView(cards);
@@ -34,6 +34,8 @@ export function mountNotes({ cards, signal, onSignedIn = () => {} }) {
   function updateAccountView() {
     if (user) element('#notes-login-status').hidden = true;
     element('#notes-storage').textContent = user ? `个人云端笔记 · ${user.email ?? ''}` : '登录后查看你的云端笔记';
+    // Signed out, the sign-in card already says this; the account bar would only repeat it.
+    element('.notes-account').hidden = !user;
     login.hidden = true;
     element('#new-note').hidden = !user;
     element('.header-account').textContent = user ? '我的账户' : '邮箱登录';

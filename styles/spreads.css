@@ -330,20 +330,32 @@ select {
     margin-bottom: 18px;
   }
 
+  /* Three per row keeps even the ten-card cross within about two screens. */
   .draw-table.layout-fork,.draw-table.layout-mirror,.draw-table.layout-grid,.draw-table.layout-week,.draw-table.layout-celtic {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 26px 15px;
-    padding: 25px 12px;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 20px 10px;
+    padding: 22px 10px;
   }
 
   .draw-table:not(.layout-single):not(.layout-line) .card-slot {
     grid-row: auto!important;
     grid-column: auto!important;
+    width: 100%;
+    min-width: 0;
   }
 
-  .workspace[data-wide="true"] .draw-table .tarot-card {
-    width: clamp(100px,28vw,135px);
-    height: clamp(172px,48vw,232px);
+  .workspace[data-wide="true"] .draw-table:not(.layout-single):not(.layout-line) .tarot-card {
+    width: min(100%,100px);
+    height: auto;
+    aspect-ratio: 100 / 170;
+  }
+
+  .workspace[data-wide="true"] .draw-table .position {
+    font-size: 12px;
+  }
+
+  .workspace[data-wide="true"] .draw-table :is(.card-name,.orientation) {
+    font-size: 13px;
   }
 
   .spread-guide ol {

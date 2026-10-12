@@ -1,4 +1,4 @@
-import { escapeHTML as html } from '../../shared/dom.js?v=cbf83dc87a43';
+import { escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
 
 const list = (title, values) => values?.length
   ? `<h4>${title}</h4><ul>${values.map(value => `<li>${html(value)}</li>`).join('')}</ul>` : '';
@@ -26,7 +26,7 @@ export function renderNoteContext(snapshot, cardsById) {
     const card = cardsById.get(item.id);
     if (!card) return '';
     const orientation = item.reverse ? '逆位' : '正位';
-    return `<button data-detail="${html(card.id)}">
+    return `<button data-detail="${html(card.id)}" data-orientation="${item.reverse ? 'reversed' : 'upright'}" data-position="${html(item.position ?? '')}">
       <span>${html(item.position)}</span>
       <img src="${html(card.imagePath)}" class="${item.reverse ? 'reversed' : ''}" alt="${html(card.name)}${orientation}">
       <b>${html(card.name)}</b><small>${orientation}</small>

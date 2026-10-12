@@ -29,9 +29,6 @@
 @media(max-width:650px) {
   .writing-bottom { align-items:start; flex-direction:column; gap:14px; }
   .writing-bottom .practice-actions { flex-wrap:wrap; }
-  .header { height:auto; min-height:112px; }
-  .header .nav { flex-wrap:nowrap; gap:8px; }
-  .header .nav button { font-size:12px; flex-shrink:0; }
 }
 
 /* The shelf stays on the page; writing happens in a book above the current view. */

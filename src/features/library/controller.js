@@ -1,5 +1,5 @@
-import { searchCards } from '../../core/catalog.js?v=cbf83dc87a43';
-import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=cbf83dc87a43';
+import { searchCards } from '../../core/catalog.js?v=08a96ee1135a';
+import { element, escapeHTML as html, listen } from '../../shared/dom.js?v=08a96ee1135a';
 
 export function mountLibrary({ cards, guides = [], signal }) {
   const search = element('#search');
@@ -7,7 +7,11 @@ export function mountLibrary({ cards, guides = [], signal }) {
   const filters = element('#filters');
   let suit = 'all';
   const guideIds = new Set(guides.map(guide => guide.cardId));
-  filters.querySelector('[data-filter="complete"]').textContent = `完整牌义 · ${guideIds.size} 张`;
+  // Once every card has a full guide, the badge and filter no longer distinguish anything.
+  const partialGuides = cards.some(card => !guideIds.has(card.id));
+  const completeFilter = filters.querySelector('[data-filter="complete"]');
+  completeFilter.textContent = `完整牌义 · ${guideIds.size} 张`;
+  completeFilter.hidden = !partialGuides;
 
   function render() {
     const matches = searchCards(cards, { suit: suit === 'complete' ? 'all' : suit, query: search.value })
@@ -18,7 +22,7 @@ export function mountLibrary({ cards, guides = [], signal }) {
       <button class="library-card" data-detail="${html(card.id)}">
         <img src="${html(card.imagePath)}" alt="${html(card.name)}牌面" loading="lazy" width="150" height="255">
         <b>${html(card.name)}</b>
-        ${guideIds.has(card.id) ? '<span class="guide-badge">完整牌义</span>' : ''}
+        ${partialGuides && guideIds.has(card.id) ? '<span class="guide-badge">完整牌义</span>' : ''}
         <p>${html(card.keywords.slice(0, 2).join(' · '))}</p>
       </button>`).join('') : '<p class="empty-state">未找到相关牌。请更换牌名或关键词。</p>';
   }

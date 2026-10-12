@@ -1,8 +1,10 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=cbf83dc87a43';
-import { SPREAD_LEVELS } from '../../core/catalog.js?v=cbf83dc87a43';
-import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=cbf83dc87a43';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
+import { SPREAD_LEVELS } from '../../core/catalog.js?v=08a96ee1135a';
+import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=08a96ee1135a';
 
-export function createPracticeView() {
+export const MIN_INTERPRETATION = 10;
+
+export function createPracticeView({ aiAvailable = true } = {}) {
   const input = element('#interpretation');
   const reference = element('#reference');
   const message = element('#practice-message');
@@ -32,7 +34,7 @@ export function createPracticeView() {
       </div>` : `
       <div class="practice-slot">
         <p class="position"><b>${index + 1}</b> ${html(spread.positions[index].name)}</p>
-        ${renderCardFace(drawn, `${index + 1} ${spread.positions[index].name}`)}
+        ${renderCardFace(drawn, `${index + 1} ${spread.positions[index].name}`, spread.positions[index].name)}
         ${renderCardCaption(drawn)}
         <p class="practice-position-prompt">${html(spread.positions[index].prompt)}</p>
       </div>`).join('');
@@ -47,17 +49,18 @@ export function createPracticeView() {
   }
 
   function updateCharacterCount() {
-    element('#char-count').textContent = `${input.value.length} 字`;
-  }
-
-  function showValidation() {
-    message.textContent = '请先写下至少 10 个字的解读，再查看参考说明。';
-    input.focus();
+    const written = input.value.trim().length;
+    element('#char-count').textContent = `${written} 字`;
+    const missing = MIN_INTERPRETATION - written;
+    element('#practice-input-hint').textContent = !aiAvailable
+      ? '写完后对照参考说明，检查自己的依据。'
+      : missing > 0 ? `再写 ${missing} 个字就可以获取 AI 评分；也可以直接对照参考。` : '可以获取 AI 评分，也可以对照参考。';
   }
 
   function showReference({ spread, reading, scenario }, completed) {
     message.textContent = '参考说明已显示。你可以对照检查，也可以继续修改解读。';
     element('#practice-count').textContent = `本次练习：${completed} 题`;
+    element('#practice-count').hidden = completed === 0;
     reference.hidden = false;
     reference.innerHTML = `
       <div class="reference">
@@ -83,5 +86,5 @@ export function createPracticeView() {
     revealButton.textContent = '收起参考';
   }
 
-  return { populate, showExercise, updateCharacterCount, showValidation, showReference };
+  return { populate, showExercise, updateCharacterCount, showReference };
 }

@@ -1,13 +1,13 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=cbf83dc87a43';
-import { setAIState, renderTextList } from '../../shared/ai-view.js?v=cbf83dc87a43';
-import { orientationLabel } from '../../shared/card-view.js?v=cbf83dc87a43';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
+import { setAIState, renderTextList } from '../../shared/ai-view.js?v=08a96ee1135a';
+import { orientationLabel } from '../../shared/card-view.js?v=08a96ee1135a';
 
 export function createReadingAssistantView() {
   const panel = element('#reading-assistant');
   const button = element('#interpret-reading');
   const message = element('#reading-ai-message');
   const result = element('#reading-ai-result');
-  const nodes = { button, message, result };
+  const nodes = { button, message, result, cancel: element('#cancel-reading-ai'), loadingText: '正在解读这组牌，请稍候…' };
 
   function reset(available) {
     panel.hidden = true;
@@ -28,14 +28,13 @@ export function createReadingAssistantView() {
     button.textContent = '重试解读';
   }
 
-  function showResult(value, spread, reading, question) {
+  function showResult(value, spread, reading) {
     panel.hidden = false;
     setAIState(nodes, 'complete');
     button.textContent = '重新解读';
     result.hidden = false;
     result.innerHTML = `
       <div class="ai-output">
-        ${question ? `<p class="reading-question">本次问题：${html(question)}</p>` : ''}
         <h3>整体解读</h3><p>${html(value.summary)}</p>
         <div class="ai-card-grid ${reading.length === 1 ? 'single' : ''}">
           ${value.cards.map((item, index) => `

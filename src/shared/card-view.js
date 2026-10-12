@@ -1,4 +1,4 @@
-import { escapeHTML as html } from './dom.js?v=cbf83dc87a43';
+import { escapeHTML as html } from './dom.js?v=08a96ee1135a';
 
 export function orientationLabel(reverse) {
   return reverse ? '逆位' : '正位';
@@ -8,7 +8,7 @@ export function renderTags(card) {
   return card.keywords.map(keyword => `<span class="tag">${html(keyword)}</span>`).join('');
 }
 
-export function renderCardFace(drawn, label) {
+export function renderCardFace(drawn, label, position = label) {
   if (!drawn) {
     return `
       <div class="tarot-card card-back" aria-label="${html(label)}：等待抽牌">
@@ -19,7 +19,7 @@ export function renderCardFace(drawn, label) {
 
   const { card, reverse } = drawn;
   return `
-    <button class="tarot-card" data-detail="${html(card.id)}" data-orientation="${reverse ? 'reversed' : 'upright'}"
+    <button class="tarot-card" data-detail="${html(card.id)}" data-orientation="${reverse ? 'reversed' : 'upright'}" data-position="${html(position)}"
       aria-label="${html(label)}：查看${html(card.name)}${orientationLabel(reverse)}牌义">
       <img src="${html(card.imagePath)}" alt="${html(card.name)}牌面"
         ${reverse ? 'class="reversed"' : ''}>

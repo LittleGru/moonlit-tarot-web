@@ -1,16 +1,16 @@
-import { loadCatalog } from './shared/catalog-loader.js?v=cbf83dc87a43';
-import { element } from './shared/dom.js?v=cbf83dc87a43';
-import { createNavigation } from './shared/navigation.js?v=cbf83dc87a43';
-import { mountCardDialog } from './shared/card-dialog.js?v=cbf83dc87a43';
-import { mountDraw } from './features/draw/controller.js?v=cbf83dc87a43';
-import { mountLibrary } from './features/library/controller.js?v=cbf83dc87a43';
-import { mountPractice } from './features/practice/controller.js?v=cbf83dc87a43';
-import { registerTarotTools } from './integrations/webmcp.js?v=cbf83dc87a43';
-import { configureRuntime } from './shared/runtime.js?v=cbf83dc87a43';
-import { mountAIAccess } from './shared/ai-access.js?v=cbf83dc87a43';
-import { mountSpreadPicker } from './shared/spread-picker.js?v=cbf83dc87a43';
-import { mountNotes } from './features/notes/controller.js?v=cbf83dc87a43';
-import { isAuthCallback } from './core/auth-callback.js?v=cbf83dc87a43';
+import { loadCatalog } from './shared/catalog-loader.js?v=08a96ee1135a';
+import { element } from './shared/dom.js?v=08a96ee1135a';
+import { createNavigation } from './shared/navigation.js?v=08a96ee1135a';
+import { mountCardDialog } from './shared/card-dialog.js?v=08a96ee1135a';
+import { mountDraw } from './features/draw/controller.js?v=08a96ee1135a';
+import { mountLibrary } from './features/library/controller.js?v=08a96ee1135a';
+import { mountPractice } from './features/practice/controller.js?v=08a96ee1135a';
+import { registerTarotTools } from './integrations/webmcp.js?v=08a96ee1135a';
+import { configureRuntime } from './shared/runtime.js?v=08a96ee1135a';
+import { mountAIAccess } from './shared/ai-access.js?v=08a96ee1135a';
+import { mountSpreadPicker } from './shared/spread-picker.js?v=08a96ee1135a';
+import { mountNotes } from './features/notes/controller.js?v=08a96ee1135a';
+import { isAuthCallback } from './core/auth-callback.js?v=08a96ee1135a';
 
 async function startApplication() {
   const lifetime = new AbortController();
@@ -45,7 +45,6 @@ async function startApplication() {
     cards: catalog.cards,
     spreads: catalog.spreads,
     scenarios: catalog.scenarios,
-    includeReversed: () => draw.includeReversed,
     signal,
     aiAvailable,
     onSave: notes.saveSnapshot,

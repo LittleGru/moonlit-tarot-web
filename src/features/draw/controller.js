@@ -1,11 +1,11 @@
-import { confirmAction } from '../../shared/confirmation.js?v=cbf83dc87a43';
-import { drawCards, describeReading } from '../../core/drawing.js?v=cbf83dc87a43';
-import { element, listen } from '../../shared/dom.js?v=cbf83dc87a43';
-import { createDrawView } from './view.js?v=cbf83dc87a43';
-import { createReadingAssistantView } from './ai-view.js?v=cbf83dc87a43';
-import { requestAI } from '../../shared/ai-client.js?v=cbf83dc87a43';
-import { createLatestRequest } from '../../shared/ai-view.js?v=cbf83dc87a43';
-import { validateInterpretation } from '../../core/ai-contract.js?v=cbf83dc87a43';
+import { confirmAction } from '../../shared/confirmation.js?v=08a96ee1135a';
+import { drawCards, describeReading } from '../../core/drawing.js?v=08a96ee1135a';
+import { element, listen } from '../../shared/dom.js?v=08a96ee1135a';
+import { createDrawView } from './view.js?v=08a96ee1135a';
+import { createReadingAssistantView } from './ai-view.js?v=08a96ee1135a';
+import { requestAI } from '../../shared/ai-client.js?v=08a96ee1135a';
+import { createLatestRequest } from '../../shared/ai-view.js?v=08a96ee1135a';
+import { validateInterpretation } from '../../core/ai-contract.js?v=08a96ee1135a';
 
 export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }) {
   const view = createDrawView();
@@ -21,8 +21,8 @@ export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }
   let assistantWasHidden = true; 
   let feedback = null;
 
-  function renderTable() {
-    view.showTable(spread, reading, breakpoint.matches);
+  function renderTable(deal = false) {
+    view.showTable(spread, reading, breakpoint.matches, deal);
   }
 
   function selectSpread(id) {
@@ -46,7 +46,7 @@ export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }
     feedback = null;
     element('#save-reading').disabled = false;
     element('#draw-save-message').textContent = '';
-    renderTable();
+    renderTable(true);
     view.showReading(spread, reading, readingQuestion);
     assistant.reset(aiAvailable);
     return describeReading(spread, reading);
@@ -63,7 +63,7 @@ export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }
         cards: snapshot.reading.map(({ card, reverse }) => ({ id: card.id, reverse })),
         question: snapshot.question,
       }, pending), snapshot.reading.length);
-      if (!pending.aborted) { feedback = value; assistant.showResult(value, snapshot.spread, snapshot.reading, snapshot.question); }
+      if (!pending.aborted) { feedback = value; assistant.showResult(value, snapshot.spread, snapshot.reading); }
     } catch (error) {
       if (!pending.aborted) {
         if (error.name === 'AbortError') assistant.reset(aiAvailable);
@@ -97,6 +97,7 @@ export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }
     question.value = readingQuestion; view.showMode('reading'); element('#reading-assistant').hidden = assistantWasHidden || !aiAvailable;
   }, signal);
   listen(element('#interpret-reading'), 'click', interpret, signal);
+  listen(element('#cancel-reading-ai'), 'click', () => { request.cancel(); assistant.reset(aiAvailable); }, signal);
   listen(element('#save-reading'), 'click', async () => {
     if (!reading.length || !onSave) return;
     const button = element('#save-reading');
@@ -109,12 +110,11 @@ export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }
     finally { button.disabled = false; }
   }, signal);
   // Resizing only re-renders the layout; it must never reshuffle an existing reading.
-  listen(breakpoint, 'change', renderTable, signal);
+  listen(breakpoint, 'change', () => renderTable(), signal);
 
   return {
     selectSpread,
     draw,
     setReversed(value) { reversed.checked = value; },
-    get includeReversed() { return reversed.checked; },
   };
 }

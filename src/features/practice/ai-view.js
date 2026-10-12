@@ -1,15 +1,22 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=cbf83dc87a43';
-import { setAIState, renderTextList } from '../../shared/ai-view.js?v=cbf83dc87a43';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
+import { setAIState, renderTextList } from '../../shared/ai-view.js?v=08a96ee1135a';
 
 export function createGradingView() {
   const button = element('#grade-practice');
   const message = element('#grading-message');
   const result = element('#grading-result');
-  const nodes = { button, message, result };
+  const nodes = { button, message, result, cancel: element('#cancel-grading'), loadingText: '正在评分，请稍候…' };
 
   function reset() {
     setAIState(nodes, 'idle');
     button.textContent = 'AI 评分与建议';
+  }
+
+  /** Feedback stays readable while the reader revises; only its relation to the text changes. */
+  function setStale(stale) {
+    if (result.hidden) return;
+    message.dataset.state = 'complete';
+    message.textContent = stale ? '解读已修改，以上反馈针对修改前的内容，可以重新评分。' : '';
   }
 
   function loading() {
@@ -31,6 +38,7 @@ export function createGradingView() {
     setAIState(nodes, 'complete');
     button.textContent = '重新评分';
     element('#practice-count').textContent = `本次练习：${completed} 题`;
+    element('#practice-count').hidden = false;
     result.hidden = false;
     result.innerHTML = `
       <div class="ai-output">
@@ -50,5 +58,5 @@ export function createGradingView() {
       </div>`;
   }
 
-  return { reset, loading, showError, showValidation, showResult };
+  return { reset, loading, showError, showValidation, showResult, setStale };
 }

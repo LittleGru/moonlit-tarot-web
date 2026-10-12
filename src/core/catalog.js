@@ -78,12 +78,36 @@ export function validateScenarios(document) {
   return scenarios;
 }
 
+/** Other common Chinese translations, so readers of different books still find the card. */
+const MAJOR_ALIASES = Object.freeze({
+  0: ['愚者'], 1: ['魔法师'], 2: ['女教皇'], 3: ['女皇'], 5: ['教宗', '祭司长'],
+  9: ['隐士'], 10: ['命运'], 12: ['吊人', '倒吊者'], 13: ['死亡'], 15: ['魔鬼'], 16: ['塔'],
+  17: ['星'], 20: ['审判日'],
+});
+const SUIT_ALIASES = Object.freeze({
+  wands: ['权杖', '木杖', '棍'], cups: ['圣杯', '杯'], swords: ['宝剑', '剑'], pentacles: ['星币', '金币', '钱币', '五角星'],
+});
+const COURT_ALIASES = Object.freeze({ 1: ['王牌', '一', 'ace'], 11: ['侍从', '侍者', '国王侍从'], 12: ['骑士'], 13: ['王后', '皇后', '女王'], 14: ['国王'] });
+const ROMAN = ['0', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv', 'xvi', 'xvii', 'xviii', 'xix', 'xx', 'xxi'];
+const compact = text => text.toLowerCase().replace(/\s+/g, '');
+
+function cardNames(card) {
+  if (card.suit === 'major') return [card.name, ...(MAJOR_ALIASES[card.rank] ?? [])];
+  const ranks = COURT_ALIASES[card.rank] ?? [];
+  const numbers = card.rank <= 10 ? [String(card.rank)] : [];
+  return SUIT_ALIASES[card.suit].flatMap(suit => [...ranks, ...numbers].map(rank => `${suit}${rank}`));
+}
+
 export function searchCards(cards, { suit = 'all', query = '' } = {}) {
-  const term = query.trim().toLowerCase();
+  const term = compact(query);
+  // A bare number or Roman numeral is a card number, not a substring of "10".
+  const number = /^\d+$/.test(term) ? Number(term) : ROMAN.indexOf(term) > 0 ? ROMAN.indexOf(term) : null;
+  // "圣杯1" must not also find "圣杯10".
+  const pattern = /\d$/.test(term) ? new RegExp(`${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?!\\d)`) : null;
   return cards.filter(card => {
-    const matchesSuit = suit === 'all' || suit === card.suit;
-    const searchableText = [card.name, card.english, card.upright, ...card.keywords]
-      .join(' ').toLowerCase();
-    return matchesSuit && searchableText.includes(term);
+    if (suit !== 'all' && suit !== card.suit) return false;
+    if (number !== null) return card.rank === number && (/^\d+$/.test(term) || card.suit === 'major');
+    const text = [card.name, card.english, card.upright, ...card.keywords, ...cardNames(card)].map(compact).join('|');
+    return pattern ? pattern.test(text) : text.includes(term);
   });
 }

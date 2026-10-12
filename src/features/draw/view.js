@@ -1,10 +1,10 @@
-import { SPREAD_LEVELS } from '../../core/catalog.js?v=cbf83dc87a43';
-import { element, escapeHTML as html } from '../../shared/dom.js?v=cbf83dc87a43';
-import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=cbf83dc87a43';
+import { SPREAD_LEVELS } from '../../core/catalog.js?v=08a96ee1135a';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
+import { renderCardFace, renderCardCaption, renderTags, orientationLabel } from '../../shared/card-view.js?v=08a96ee1135a';
 
 function renderSlot(position, index, drawn) {
   return `
-    <div class="card-slot" style="grid-row:${position.row};grid-column:${position.column}">
+    <div class="card-slot" style="grid-row:${position.row};grid-column:${position.column};--deal:${index}">
       <span class="position"><b>${index + 1}</b> ${html(position.name)}</span>
       ${renderCardFace(drawn, position.name)}
       ${drawn ? renderCardCaption(drawn) : ''}
@@ -21,15 +21,15 @@ function renderCrossPair(spread, reading) {
       </div>
       <div class="cross-stage">
         ${positions.map((position, index) => `
-          <div class="cross-face ${index === 1 ? 'crossing' : ''}">
-            ${renderCardFace(reading[index], `${index + 1} ${position.name}`)}
+          <div class="cross-face ${index === 1 ? 'crossing' : ''}" style="--deal:${index}">
+            ${renderCardFace(reading[index], `${index + 1} ${position.name}`, position.name)}
           </div>`).join('')}
       </div>
       ${reading.length ? `
         <div class="cross-legend">
-          ${positions.map((_, index) => {
+          ${positions.map((position, index) => {
             const drawn = reading[index];
-            return `<button class="text-button" data-detail="${html(drawn.card.id)}">
+            return `<button class="text-button" data-detail="${html(drawn.card.id)}" data-orientation="${drawn.reverse ? 'reversed' : 'upright'}" data-position="${html(position.name)}">
               ${index + 1} · ${html(drawn.card.name)} · ${orientationLabel(drawn.reverse)}
             </button>`;
           }).join('')}
@@ -88,8 +88,9 @@ export function createDrawView() {
     document.dispatchEvent(new Event('spreadchange'));
   }
 
-  function showTable(spread, reading, useCrossLayout) {
-    table.className = `draw-table layout-${spread.layout}`;
+  /** `deal` animates a fresh draw only; layout re-renders keep the cards still. */
+  function showTable(spread, reading, useCrossLayout, deal = false) {
+    table.className = `draw-table layout-${spread.layout}${deal ? ' dealing' : ''}`;
     table.dataset.count = spread.count;
     const crossed = spread.layout === 'celtic' && useCrossLayout;
     table.innerHTML = spread.positions.map((position, index) => {
@@ -101,7 +102,7 @@ export function createDrawView() {
   function showReading(spread, reading, question) {
     caption.textContent = spread.layout === 'celtic'
       ? '点击牌面或中央的牌名查看牌义。第 2 张横置，正逆位以标签为准。'
-      : '点击牌面查看牌义，下方列有各位置的解读提示。';
+      : '点击牌面查看完整牌义，下方列有各位置的解读提示。';
     drawButton.textContent = '重新抽牌';
     element('#reading-spread-title').textContent = spread.name;
     element('#reading-question-summary').textContent = question || '本次没有填写问题';
@@ -112,26 +113,18 @@ export function createDrawView() {
         <h2>${html(spread.name)} · 牌义参考</h2>
         <button class="text-button" data-tab="practice">继续练习解读</button>
       </div>
-      <p id="reading-question" class="reading-question" hidden></p>
       <div class="result-grid ${spread.count === 1 ? 'single' : ''}">
         ${reading.map(({ card, reverse }, index) => `
           <article class="result-card">
             <p class="eyebrow">${index + 1} · ${html(spread.positions[index].name)}</p>
             <h3>${html(card.name)} · ${orientationLabel(reverse)}</h3>
-            <p class="position-prompt">${html(spread.positions[index].prompt)}</p>
+            <p class="position-prompt"><span>这个位置问</span>${html(spread.positions[index].prompt)}</p>
             <div class="tags">${renderTags(card)}</div>
             <p>${html(reverse ? card.reversed : card.upright)}</p>
-            <p class="reflection">解读问题：${html(card.prompt)}</p>
+            <p class="reflection"><span>可以问自己</span>${html(card.prompt)}</p>
           </article>`).join('')}
       </div>
       <p class="reading-tip">阅读建议：${html(spread.readingTip)}</p>`;
-    showQuestion(question);
-  }
-
-  function showQuestion(question) {
-    const questionDisplay = element('#reading-question');
-    questionDisplay.hidden = !question;
-    questionDisplay.textContent = question ? `本次问题：${question}` : '';
   }
 
   function showMode(mode) {
@@ -145,5 +138,5 @@ export function createDrawView() {
     }
   }
 
-  return { showMode, populate, showSpread, showTable, showReading, showQuestion };
+  return { showMode, populate, showSpread, showTable, showReading };
 }

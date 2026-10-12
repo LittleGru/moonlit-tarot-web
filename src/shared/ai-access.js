@@ -23,6 +23,8 @@ export async function requireAIInvite(signal) {
   if (invite) return invite;
   if (!pending) pending = new Promise(resolve => {
     const dialog = document.querySelector('#ai-access-dialog');
+    const clear = document.querySelector('#ai-access-clear');
+    if (clear) clear.hidden = true;
     dialog.showModal();
     document.querySelector('#ai-invite-code').focus();
     dialog.addEventListener('close', () => { pending = null; resolve(invite); }, { once: true });
@@ -44,9 +46,15 @@ export function mountAIAccess(document, signal) {
   const input = document.querySelector('#ai-invite-code');
   const message = document.querySelector('#ai-access-message');
   const submit = document.querySelector('#ai-access-submit');
+  const clear = document.querySelector('#ai-access-clear');
   const updateButton = () => { button.textContent = invite ? 'AI 已开启' : '开启 AI'; };
   updateButton();
-  button.addEventListener('click', () => { dialog.showModal(); input.focus(); }, { signal });
+  button.addEventListener('click', () => {
+    clear.hidden = !invite;
+    message.textContent = invite ? 'AI 已开启。填写新的邀请码可以更换，也可以停用。' : '';
+    dialog.showModal(); input.focus();
+  }, { signal });
+  clear.addEventListener('click', () => { clearAIInvite(); clear.hidden = true; message.textContent = ''; dialog.close(); }, { signal });
   document.querySelector('#ai-access-close').addEventListener('click', () => dialog.close(), { signal });
   document.querySelector('#ai-access-form').addEventListener('submit', async event => {
     event.preventDefault();

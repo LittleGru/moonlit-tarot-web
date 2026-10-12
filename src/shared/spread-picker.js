@@ -1,4 +1,14 @@
-import { element, escapeHTML as html, listen } from './dom.js?v=cbf83dc87a43';
+import { element, escapeHTML as html, listen } from './dom.js?v=08a96ee1135a';
+
+/** A miniature of the table layout; the Celtic cross keeps its second card across the first. */
+export function renderSpreadMap(spread) {
+  const columns = Math.max(...spread.positions.map(position => position.column));
+  const cells = spread.positions.map((position, index) => {
+    const crossing = spread.layout === 'celtic' && index === 1;
+    return `<i style="grid-row:${position.row};grid-column:${position.column}"${crossing ? ' class="crossing"' : ''}></i>`;
+  }).join('');
+  return `<span class="spread-map" style="grid-template-columns:repeat(${columns},var(--map-card))" aria-hidden="true">${cells}</span>`;
+}
 
 /** Both workflows share the same readable picker; native selects remain the source of truth. */
 export function mountSpreadPicker({ spreads, signal }) {
@@ -17,7 +27,7 @@ export function mountSpreadPicker({ spreads, signal }) {
     const button = event.target.closest('[data-spread-picker]');
     if (!button) return;
     target = element(`#${button.dataset.spreadPicker}`);
-    list.innerHTML = spreads.map(spread => `<button class="spread-choice" data-spread-choice="${html(spread.id)}" aria-pressed="${target.value === spread.id}"><span class="spread-choice-count">${spread.count}<small>张</small></span><span><b>${html(spread.name)}</b><small>${html(spread.level)}</small><p>${html(spread.description)}</p></span>${target.value === spread.id ? '<span class="spread-selected">已选</span>' : ''}</button>`).join('');
+    list.innerHTML = spreads.map(spread => `<button class="spread-choice" data-spread-choice="${html(spread.id)}" aria-pressed="${target.value === spread.id}"><span class="spread-choice-count">${renderSpreadMap(spread)}<small>${spread.count} 张</small></span><span><b>${html(spread.name)}</b><small>${html(spread.level)}</small><p>${html(spread.description)}</p></span>${target.value === spread.id ? '<span class="spread-selected">已选</span>' : ''}</button>`).join('');
     dialog.showModal();
   }, signal);
   listen(list, 'click', event => {
