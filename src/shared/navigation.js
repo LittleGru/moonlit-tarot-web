@@ -1,5 +1,5 @@
-import { element, listen } from './dom.js?v=08a96ee1135a';
-import { createPageRouter, PAGE_TITLES } from '../core/routing.js?v=08a96ee1135a';
+import { element, listen } from './dom.js?v=0b6360114351';
+import { createPageRouter, PAGE_TITLES } from '../core/routing.js?v=0b6360114351';
 
 export function createNavigation({ onEnter, signal }) {
   window.history.scrollRestoration = 'manual';

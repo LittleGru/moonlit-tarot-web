@@ -1,4 +1,4 @@
-import { isAuthCallback } from './auth-callback.js?v=08a96ee1135a';
+import { isAuthCallback } from './auth-callback.js?v=0b6360114351';
 
 export const PAGE_TITLES = Object.freeze({
   home: '首页', draw: '抽牌', learn: '牌义资料', practice: '解读练习', guide: '入门指南', notes: '我的笔记',

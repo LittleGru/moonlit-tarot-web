@@ -1,6 +1,6 @@
-import { element, escapeHTML as html } from '../../shared/dom.js?v=08a96ee1135a';
-import { setAIState, renderTextList } from '../../shared/ai-view.js?v=08a96ee1135a';
-import { orientationLabel } from '../../shared/card-view.js?v=08a96ee1135a';
+import { element, escapeHTML as html } from '../../shared/dom.js?v=0b6360114351';
+import { setAIState, renderTextList } from '../../shared/ai-view.js?v=0b6360114351';
+import { orientationLabel } from '../../shared/card-view.js?v=0b6360114351';
 
 export function createReadingAssistantView() {
   const panel = element('#reading-assistant');

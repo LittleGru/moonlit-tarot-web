@@ -1,11 +1,11 @@
-import { confirmAction } from '../../shared/confirmation.js?v=08a96ee1135a';
-import { drawCards, describeReading } from '../../core/drawing.js?v=08a96ee1135a';
-import { element, listen } from '../../shared/dom.js?v=08a96ee1135a';
-import { createDrawView } from './view.js?v=08a96ee1135a';
-import { createReadingAssistantView } from './ai-view.js?v=08a96ee1135a';
-import { requestAI } from '../../shared/ai-client.js?v=08a96ee1135a';
-import { createLatestRequest } from '../../shared/ai-view.js?v=08a96ee1135a';
-import { validateInterpretation } from '../../core/ai-contract.js?v=08a96ee1135a';
+import { confirmAction } from '../../shared/confirmation.js?v=0b6360114351';
+import { drawCards, describeReading } from '../../core/drawing.js?v=0b6360114351';
+import { element, listen } from '../../shared/dom.js?v=0b6360114351';
+import { createDrawView } from './view.js?v=0b6360114351';
+import { createReadingAssistantView } from './ai-view.js?v=0b6360114351';
+import { requestAI } from '../../shared/ai-client.js?v=0b6360114351';
+import { createLatestRequest } from '../../shared/ai-view.js?v=0b6360114351';
+import { validateInterpretation } from '../../core/ai-contract.js?v=0b6360114351';
 
 export function mountDraw({ cards, spreads, signal, aiAvailable = true, onSave }) {
   const view = createDrawView();

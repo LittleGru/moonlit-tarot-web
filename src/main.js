@@ -1,18 +1,20 @@
-import { loadCatalog } from './shared/catalog-loader.js?v=08a96ee1135a';
-import { element } from './shared/dom.js?v=08a96ee1135a';
-import { createNavigation } from './shared/navigation.js?v=08a96ee1135a';
-import { mountCardDialog } from './shared/card-dialog.js?v=08a96ee1135a';
-import { mountDraw } from './features/draw/controller.js?v=08a96ee1135a';
-import { mountLibrary } from './features/library/controller.js?v=08a96ee1135a';
-import { mountPractice } from './features/practice/controller.js?v=08a96ee1135a';
-import { registerTarotTools } from './integrations/webmcp.js?v=08a96ee1135a';
-import { configureRuntime } from './shared/runtime.js?v=08a96ee1135a';
-import { mountAIAccess } from './shared/ai-access.js?v=08a96ee1135a';
-import { mountSpreadPicker } from './shared/spread-picker.js?v=08a96ee1135a';
-import { mountNotes } from './features/notes/controller.js?v=08a96ee1135a';
-import { isAuthCallback } from './core/auth-callback.js?v=08a96ee1135a';
+import { loadCatalog } from './shared/catalog-loader.js?v=0b6360114351';
+import { element } from './shared/dom.js?v=0b6360114351';
+import { createNavigation } from './shared/navigation.js?v=0b6360114351';
+import { mountCardDialog } from './shared/card-dialog.js?v=0b6360114351';
+import { mountDraw } from './features/draw/controller.js?v=0b6360114351';
+import { mountLibrary } from './features/library/controller.js?v=0b6360114351';
+import { mountPractice } from './features/practice/controller.js?v=0b6360114351';
+import { registerTarotTools } from './integrations/webmcp.js?v=0b6360114351';
+import { configureRuntime } from './shared/runtime.js?v=0b6360114351';
+import { mountAIAccess } from './shared/ai-access.js?v=0b6360114351';
+import { mountSpreadPicker } from './shared/spread-picker.js?v=0b6360114351';
+import { mountNotes } from './features/notes/controller.js?v=0b6360114351';
+import { isAuthCallback } from './core/auth-callback.js?v=0b6360114351';
+import { mountNativeAuthBridge } from './shared/native-auth-bridge.js?v=0b6360114351';
 
 async function startApplication() {
+  if (mountNativeAuthBridge()) return;
   const lifetime = new AbortController();
   // A cached page resumes with its existing controllers and listeners intact.
   window.addEventListener('pagehide', event => {
